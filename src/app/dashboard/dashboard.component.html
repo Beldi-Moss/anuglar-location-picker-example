@@ -1,0 +1,104 @@
+
+<div fxFlexFill>
+  <div  fxLayout="row">
+
+
+          <div  fxFlex="1 1 30%" fxLayout="column" class="leftSide" >
+                <div fxLayout="row" fxLayoutAlign="space-between  center " class="header">
+                  <h2><i>My Saved Location</i></h2>
+                  <button id="newPlaceButton" [ngStyle]="{'background-color': addNewPlace?'grey':'#4CAF50'}" (click)="newPlaceRequest()"> {{addNewPlace?'Cancel':'New Place'}}</button>
+                </div>
+                  <table>
+                    <tr>
+                      <th> Name </th>
+                      <th> Comment </th>
+                      <th> Location </th>
+                    </tr>
+                    <ng-container  *ngFor="let place of myPlaces">
+                      <tr  class="placesDiv" (click)="focusOnPlace($event, place)">
+                        <td> {{place?.name }}</td>
+                        <td> {{place?.comment }}</td>
+                        <td> {{place?.location }}</td>
+                      </tr>
+                    </ng-container>
+
+                    <ng-container  *ngFor="let place of myPlaces">
+                      <tr  class="placesDiv" (click)="focusOnPlace($event, place)">
+                        <td> {{place?.name }}</td>
+                        <td> {{place?.comment }}</td>
+                        <td> {{place?.location }}</td>
+                      </tr>
+                    </ng-container>
+
+                    <ng-container  *ngFor="let place of myPlaces">
+                      <tr  class="placesDiv" (click)="focusOnPlace($event, place)">
+                        <td> {{place?.name }}</td>
+                        <td> {{place?.comment }}</td>
+                        <td> {{place?.location }}</td>
+                      </tr>
+                    </ng-container>
+
+                    <ng-container  *ngFor="let place of myPlaces">
+                      <tr  class="placesDiv" (click)="focusOnPlace($event, place)">
+                        <td> {{place?.name }}</td>
+                        <td> {{place?.comment }}</td>
+                        <td> {{place?.location }}</td>
+                      </tr>
+                    </ng-container>
+                  </table>
+
+          </div>
+
+    <div fxFlex  >
+      <agm-map  #AgmMap [latitude]="latitude"
+                (mapClick)="mapClicked($event)"
+                (click)="$event.stopPropagation()"
+                [longitude]="longitude">
+        <agm-marker
+          *ngFor="let marker of markers"
+          [latitude]="marker.lat"
+          [longitude]="marker.lng"
+          [animation]="'DROP'"
+        >
+          <agm-info-window [isOpen]="addNewPlace">
+            <form  *ngIf="addNewPlace; else placeInfo" fxLayout="column"  [formGroup]="placeFrom" (ngSubmit)="submit(placeFrom.value)">
+              <div class="form-container">
+                <input type="text" placeholder="Name" formControlName="name" id="_name"  >
+                <input type="text" placeholder="comment" formControlName="comment" id="comment"  >
+                <input type="text" placeholder="location" formControlName="location" id="location"  >
+
+                <div >
+                  <div    [ngClass]="{'placeImage': placeHasImage }"[style.background-image]="'url('+imageUrl+')'"></div>
+                  <input #imgInput  hidden="true" style="display: none" type="file" (change)="onFileSelect($event)" accept=".*"/>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-around center">
+                  <button  class="submitButton picButton" type="button" (click)="imgInput.click();">Picture</button>
+                  <button type="submit" class="submitButton " [disabled]="!placeFrom.valid">Save</button>
+                </div>
+              </div>
+            </form>
+            <ng-template #placeInfo>
+                  <div fxLayout="row"  fxLayoutGap="10px" fxLayoutAlign="space-between start">
+                    <div fxLayout="column" fxLayoutGap="5px">
+                      <span><b>Name:</b></span>
+                      <span><b>Comment:</b> </span>
+                      <span><b>Location:</b> </span>
+                    </div>
+                    <div fxLayout="column"  fxLayoutGap="5px" >
+                       <span>Name: </span>
+                       <span>{{marker?.name}}</span>
+                       <span>{{marker?.Comment}}</span>
+                       <span>{{marker?.location}}</span>
+                       <img *ngIf="marker?.image" [src]="marker?.image"   style="width: 250px; height: 70px"/>
+                    </div>
+
+                  </div>
+            </ng-template>
+
+          </agm-info-window>
+        </agm-marker>
+      </agm-map>
+    </div>
+
+  </div>
+</div>
