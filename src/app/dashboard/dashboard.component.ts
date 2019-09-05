@@ -15,7 +15,7 @@ declare var google: any;
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
   latitude = 36.6753312;
@@ -163,7 +163,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       from(this.databaseService.addNewPlace(values)).pipe(
         switchMap(( placeData: any) =>  this.uploadImage(placeData) ),
         switchMap((res) => this.updatePlace(res))
-      ).subscribe(res => { console.log("done") });
+      ).subscribe(res => {
+	        this.imageData =null;
+          this.placeFrom.reset();
+          this.imageUrl = null;
+          console.log("done") 
+          }, err => {
+          alert("error: "+ err);
+      });
     } catch  (error) {
     }
   }
