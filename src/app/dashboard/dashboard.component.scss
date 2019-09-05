@@ -28,7 +28,9 @@ table th {
   background-color: #4CAF50;
   color: white;
 }
-
+h2 {
+  color:  #4CAF50;
+}
 input[type=text]{
   width: 100%;
   padding: 12px 20px;
@@ -38,7 +40,6 @@ input[type=text]{
   box-sizing: border-box;
 }
 .form-container {
-  text-align: center;
 }
 .submitButton {
   background-color: #4CAF50;
@@ -72,7 +73,16 @@ input[type=text]{
   border: none;
   background-color: green;
 }
-
+#logOutButton {
+  padding: 8px 20px 8px 20px;
+  color: white;
+  cursor: pointer;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+#logOutButton :hover {
+  opacity: 0.8;
+}
 #newPlaceButton :hover {
   opacity: 0.8;
 }

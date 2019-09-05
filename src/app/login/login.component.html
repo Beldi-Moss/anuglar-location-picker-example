@@ -3,16 +3,14 @@
   <div class="imgcontainer">
     <img src="assets/logo.png" alt="Avatar" class="avatar">
   </div>
-  <div class="container">
-    <label for="_email"><b>Username</b></label>
-    <input type="email" placeholder="Enter Email" formControlName="email" id="_email"  >
+    <label for="_email"><b>Email</b></label>
+    <input type="email" placeholder="email : admin@gmail.com" formControlName="email" id="_email"  >
     <label for="_password"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" id="_password" formControlName="password">
+    <input type="password" placeholder="password : admin23" id="_password" formControlName="password">
     <p *ngIf="error" class="error">
       {{ errorMessage }}
     </p>
+    <app-spinner-overlay *ngIf="showLoading"></app-spinner-overlay>
     <button type="submit" [disabled]="!form.valid">Login</button>
-  </div>
 </form>
 </div>
-<app-spinner-overlay *ngIf="showLoading" ></app-spinner-overlay>

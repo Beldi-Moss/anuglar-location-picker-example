@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild, AfterViewInit, HostListener} from '@angular/core';
 import {DatabaseService} from '../services/database.service';
-import {AgmMap, MouseEvent,  AgmMap, LatLngBounds, LatLngBoundsLiteral} from '@agm/core';
+import {AgmMap, MouseEvent, LatLngBounds, LatLngBoundsLiteral} from '@agm/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import * as firebase from "firebase";
 import {PlaceModel} from "../models/place";
@@ -8,6 +8,8 @@ import {GoogleMap} from "@agm/core/services/google-maps-types";
 import {from, of} from "rxjs/index";
 import {ImageUploadService} from "../services/image-upload.service";
 import {map, switchMap} from "rxjs/internal/operators";
+import {AuthService} from "../services/auth.service";
+import {Router} from "@angular/router";
 declare var google: any;
 
 @Component({
@@ -29,12 +31,19 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   imageData
   imageUrl
   placeHasImage = false;
+  markerIcon = {
+    url: 'assets/marker.png',
+    scaledSize: {
+      width: 60,
+      height: 60
+    }
+  };
   @HostListener('document:click', ['$event'])
   clickedOutside($event){
   this.fitMapBound();
   }
 
-  constructor(private imgService: ImageUploadService, private databaseService: DatabaseService) {}
+  constructor(private router: Router, private authService: AuthService, private imgService: ImageUploadService, private databaseService: DatabaseService) {}
 
   ngOnInit() {
     this.initForm();
@@ -142,19 +151,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
   uploadImage(data ) {
     const placeDocument = data;
-    if (!this.imageData) { return from([0]); }
+    if (!this.imageData) { return from(null); }
     const {changes, percentage, ref } =  this.imgService.uploadImage('images/places', this.imageData);
-    percentage.subscribe(res => {
-      console.log('percentage ', res);
-    });
-    return from(changes).pipe(switchMap(() =>  ref.getDownloadURL().pipe(map(res => {return {'photoURL': res, 'place': placeDocument}; } ) ) ));
+    percentage.subscribe(res => {  console.log('percentage ', res); });
+    return from(changes).pipe(switchMap(() =>  ref.getDownloadURL().pipe(map(res => {return {photoURL: res, place: placeDocument}; } ) ) ));
   }
 
   async submit(values)  {
     this.addNewPlace = false;
     try {
       from(this.databaseService.addNewPlace(values)).pipe(
-        switchMap(( drvierData ) =>  this.uploadImage(drvierData) ),
+        switchMap(( placeData: any) =>  this.uploadImage(placeData) ),
         switchMap((res) => this.updateDriver(res))
       ).subscribe(res => { console.log("done") });
 
@@ -189,4 +196,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.imageData = files[0];
   }
 
+ async signOut() {
+    try{
+      await this.authService.signOut();
+      this.router.navigateByUrl('login');
+    } catch (e) {
+      alert(e);
+    }
+  }
 }

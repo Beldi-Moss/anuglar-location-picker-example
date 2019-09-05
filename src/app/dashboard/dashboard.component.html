@@ -1,50 +1,32 @@
 
 <div fxFlexFill>
-  <div  fxLayout="row">
+  <div  fxLayout="row"  fxLayout.lt-sm="column"  fxLayout.lt-sm="column"   fxLayout.lt-md="column"  >
 
 
-          <div  fxFlex="1 1 30%" fxLayout="column" class="leftSide" >
+          <div  fxFlex="1 1 40%" fxLayout="column" class="leftSide" >
                 <div fxLayout="row" fxLayoutAlign="space-between  center " class="header">
                   <h2><i>My Saved Location</i></h2>
-                  <button id="newPlaceButton" [ngStyle]="{'background-color': addNewPlace?'grey':'#4CAF50'}" (click)="newPlaceRequest()"> {{addNewPlace?'Cancel':'New Place'}}</button>
+                  <div fxLayout="row" fxLayoutGap="10px">
+                    <button id="newPlaceButton" [ngStyle]="{'background-color': addNewPlace?'grey':'#4CAF50'}" (click)="newPlaceRequest()"> {{addNewPlace?'Cancel':'New Place'}}</button>
+                    <button id="logOutButton"  (click)="signOut()"> Sign Out</button>
+                  </div>
                 </div>
                   <table>
                     <tr>
+                      <th>#</th>
                       <th> Name </th>
                       <th> Comment </th>
                       <th> Location </th>
                     </tr>
                     <ng-container  *ngFor="let place of myPlaces">
                       <tr  class="placesDiv" (click)="focusOnPlace($event, place)">
+                        <td style="width: 100px"> <img onerror="this.onerror=null;this.src='assets/imageHolder.png';" [src]="place.photoURL" height="50px" width="100px"/></td>
                         <td> {{place?.name }}</td>
                         <td> {{place?.comment }}</td>
                         <td> {{place?.location }}</td>
                       </tr>
                     </ng-container>
 
-                    <ng-container  *ngFor="let place of myPlaces">
-                      <tr  class="placesDiv" (click)="focusOnPlace($event, place)">
-                        <td> {{place?.name }}</td>
-                        <td> {{place?.comment }}</td>
-                        <td> {{place?.location }}</td>
-                      </tr>
-                    </ng-container>
-
-                    <ng-container  *ngFor="let place of myPlaces">
-                      <tr  class="placesDiv" (click)="focusOnPlace($event, place)">
-                        <td> {{place?.name }}</td>
-                        <td> {{place?.comment }}</td>
-                        <td> {{place?.location }}</td>
-                      </tr>
-                    </ng-container>
-
-                    <ng-container  *ngFor="let place of myPlaces">
-                      <tr  class="placesDiv" (click)="focusOnPlace($event, place)">
-                        <td> {{place?.name }}</td>
-                        <td> {{place?.comment }}</td>
-                        <td> {{place?.location }}</td>
-                      </tr>
-                    </ng-container>
                   </table>
 
           </div>
@@ -58,6 +40,7 @@
           *ngFor="let marker of markers"
           [latitude]="marker.lat"
           [longitude]="marker.lng"
+          [iconUrl]="markerIcon"
           [animation]="'DROP'"
         >
           <agm-info-window [isOpen]="addNewPlace">

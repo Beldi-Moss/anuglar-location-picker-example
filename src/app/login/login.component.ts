@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
       }
     }
     if ( user ) {
-      this.route.navigateByUrl('dashboard');
+      this.route.navigateByUrl('/');
     } else {
       this.error = true;
       this.showLoading = false;
