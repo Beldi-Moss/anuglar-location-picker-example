@@ -142,7 +142,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     });
   }
 
-  updateDriver(res) {
+  updatePlace(res) {
     if (this.imageData) {
       return of(res.place.update({photoURL: res.photoURL}));
     } else {
@@ -162,10 +162,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     try {
       from(this.databaseService.addNewPlace(values)).pipe(
         switchMap(( placeData: any) =>  this.uploadImage(placeData) ),
-        switchMap((res) => this.updateDriver(res))
+        switchMap((res) => this.updatePlace(res))
       ).subscribe(res => { console.log("done") });
-
-      await this.databaseService.addNewPlace(values);
     } catch  (error) {
     }
   }
