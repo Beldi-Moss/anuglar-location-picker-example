@@ -151,7 +151,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
   uploadImage(data ) {
     const placeDocument = data;
-    if (!this.imageData) { return from(null); }
+    if (!this.imageData) { return of({}); }
     const {changes, percentage, ref } =  this.imgService.uploadImage('images/places', this.imageData);
     percentage.subscribe(res => {  console.log('percentage ', res); });
     return from(changes).pipe(switchMap(() =>  ref.getDownloadURL().pipe(map(res => {return {photoURL: res, place: placeDocument}; } ) ) ));
